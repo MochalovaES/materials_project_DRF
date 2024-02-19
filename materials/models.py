@@ -12,6 +12,8 @@ class Course(models.Model):
     image = models.ImageField(upload_to='materials/', verbose_name='изображение', **NULLABLE)
     description = models.CharField(max_length=500, verbose_name='Описание курса')
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
+
     def __str__(self):
         # Строковое отображение объекта
         return {self.name}
@@ -31,6 +33,7 @@ class Lesson(models.Model):
     link_video = models.CharField(max_length=200, verbose_name='Ссылка на видео')
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс pk')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
         # Строковое отображение объекта
