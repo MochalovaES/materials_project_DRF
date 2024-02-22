@@ -1,0 +1,44 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$c8BHQc8MM8tPezaQqwjvYm$y6A7a7DpOrGCk3r+0Ibjx+qcBmP5Q9CTLw/k3Aelk6c=",
+      "last_login": "2024-02-21T18:00:00Z",
+      "is_superuser": true,
+      "first_name": "Admin",
+      "last_name": "Adminov",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2022-02-21T18:01:03Z",
+      "email": "admin@sky.pro",
+      "phone": null,
+      "country": null,
+      "avatar": "",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$0JipNErM6klo75yg9ypfpt$diUP25nKIgPhe4EmDPu4W4L0Ynz5bb+lMpZYJPQdKWk=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Ivan",
+      "last_name": "Ivanov",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-02-21T18:28:30Z",
+      "email": "ivanov@test.ru",
+      "phone": null,
+      "country": null,
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
