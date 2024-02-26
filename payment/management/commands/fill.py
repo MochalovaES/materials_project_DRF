@@ -16,4 +16,3 @@ class Command(BaseCommand):
 
         for payment in payment_list:
             Payment.objects.create(**payment)
-

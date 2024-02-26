@@ -1,5 +1,9 @@
-from materials.models import Course, Lesson
-from materials.serializers import CourseSerializer, LessonSerializer
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
+
+from materials.models import Course, Lesson, Subscription
+from materials.paginators import MaterialsPagination
+from materials.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsModerator, IsOwner
@@ -11,6 +15,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     """
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = MaterialsPagination
 
     def get_permissions(self):
         if self.action == 'create':
@@ -53,6 +58,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = MaterialsPagination
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -80,5 +86,37 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated | IsOwner]
+
+
+class SubscriptionCreateAPIView(generics.CreateAPIView):
+    """
+    CRUD создание сущности для установки подписки пользователя через Generic
+    """
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get('course_id')
+        course_item = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscription.objects.filter(user=user).filter(course=course_id).all()
+        # Если подписка у пользователя на этот курс есть - удаляем ее
+        if subs_item.exists():
+            subscription_id = subs_item[0].pk
+            subscription = Subscription.objects.get(pk=subscription_id)
+            subscription.delete()
+            message = 'подписка удалена'
+        # Если подписки у пользователя на этот курс нет - создаем ее
+        else:
+            new_subscription = {
+                "user": user,
+                "course_id": course_id
+            }
+            Subscription.objects.create(**new_subscription)
+            message = 'подписка добавлена'
+        # Возвращаем ответ в API
+        return Response({"message": message})
+
 
 
