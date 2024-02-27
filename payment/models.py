@@ -19,7 +19,7 @@ class Payment(models.Model):
     lesson = models.ForeignKey(Lesson, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Урок')
     amount = models.PositiveIntegerField(verbose_name='Сумма')
     method = models.CharField(max_length=50, choices=METHOD_CHOICES, help_text='Выберите способ оплаты')
-
+    url_payment = models.CharField(max_length=500, **NULLABLE, verbose_name='адрес оплаты')
     def __str__(self):
         # Строковое отображение объекта
         return f'{self.course}:{self.lesson}  оплаченно на сумму {self.amount}'

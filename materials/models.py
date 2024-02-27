@@ -13,6 +13,7 @@ class Course(models.Model):
     name = models.CharField(max_length=150, verbose_name='Наименование курса')
     image = models.ImageField(upload_to='materials/', verbose_name='изображение', **NULLABLE)
     description = models.CharField(max_length=500, verbose_name='Описание курса')
+    amount = models.IntegerField(default=1000, verbose_name='цена')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 

@@ -39,9 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
+    'drf_yasg',
+
     'materials',
     'users',
     'payment',
@@ -155,9 +158,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
     # Установка прав по умолчанию только с авторизацией
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    #'DEFAULT_PERMISSION_CLASSES': [
+        #'rest_framework.permissions.IsAuthenticated',
+    #],
     # Замена на права доступа для всех, права на авторизацию указываются отдельно
     #'DEFAULT_PERMISSION_CLASSES': [
     #   'rest_framework.permissions.AllowAny',
@@ -170,3 +173,4 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
+STRIPE_API_KEY = os.getenv('STRIPE_API_KEY')
