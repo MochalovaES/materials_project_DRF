@@ -8,7 +8,8 @@ from materials.serializers import CourseSerializer, LessonSerializer, Subscripti
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
 
-
+from materials.services import get_url_payment
+from payment.models import Payment
 from users.permissions import IsModerator, IsOwner
 
 
@@ -122,3 +123,31 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
         return Response({"message": message})
 
 
+class CoursePaymentAPIView(APIView):
+    """
+    Создание возможности оплаты Курсов
+    """
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data["course"]
+
+        course_item = get_object_or_404(Course, pk=course_id)
+
+        if course_item:
+            url_for_payment = get_url_payment(course_item)
+            message = 'Оплата курса'
+            data = {
+                "user": user,
+                "date": '2024-02-27',
+                "course": course_item,
+                "amount": course_item.price,
+                "method": 'Перевод',
+                "url_for_payment": url_for_payment,
+            }
+            payment = Payment.objects.create(**data)
+            payment.save()
+            return Response({"message": message, "url": url_for_payment})
+        else:
+            message = 'Курс для оплаты не найден'
+            return Response({"message": message})
