@@ -125,7 +125,7 @@ class SubscriptionCreateAPIView(generics.CreateAPIView):
 
 class CoursePaymentAPIView(APIView):
     """
-    Создание возможности оплаты Курсов
+    Создание сущности для возможности оплаты Курсов
     """
 
     def post(self, *args, **kwargs):
