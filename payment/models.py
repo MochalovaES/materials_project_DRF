@@ -23,7 +23,7 @@ class Payment(models.Model):
     lesson = models.ForeignKey(Lesson, **NULLABLE, on_delete=models.SET_NULL, verbose_name='Урок')
     amount = models.PositiveIntegerField(verbose_name='Сумма')
     method = models.CharField(max_length=50, choices=METHOD_CHOICES, help_text='Выберите способ оплаты')
-    status = models.CharField(max_length=1, **NULLABLE, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=50, **NULLABLE, choices=STATUS_CHOICES)
     url_payment = models.CharField(max_length=500, **NULLABLE, verbose_name='адрес оплаты')
 
     def __str__(self):
