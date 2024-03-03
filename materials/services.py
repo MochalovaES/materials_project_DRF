@@ -1,4 +1,5 @@
 import stripe
+from django.urls import reverse_lazy
 
 from config.settings import STRIPE_API_KEY
 
@@ -12,7 +13,7 @@ def get_url_payment(course):
         product_data={"name": course.name},
     )
     responce_url = stripe.checkout.Session.create(
-        success_url="https://example.com/success",
+        success_url=reverse_lazy('materials:course'),
         line_items=[{"price": responce_price["id"], "quantity": 1}],
         mode="payment",
     )

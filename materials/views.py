@@ -1,3 +1,5 @@
+from datetime import date
+
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -135,19 +137,20 @@ class CoursePaymentAPIView(APIView):
         course_item = get_object_or_404(Course, pk=course_id)
 
         if course_item:
-            url_for_payment = get_url_payment(course_item)
+            url_payment = get_url_payment(course_item)
             message = 'Оплата курса'
             data = {
                 "user": user,
-                "date": '2024-02-27',
+                "date": date,
                 "course": course_item,
                 "amount": course_item.price,
                 "method": 'Перевод',
-                "url_for_payment": url_for_payment,
+                "url_for_payment": url_payment,
+                "status": 'Создана',
             }
             payment = Payment.objects.create(**data)
             payment.save()
-            return Response({"message": message, "url": url_for_payment})
+            return Response({"message": message, "url": url_payment})
         else:
             message = 'Курс для оплаты не найден'
             return Response({"message": message})
