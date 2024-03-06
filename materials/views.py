@@ -7,12 +7,13 @@ from rest_framework.views import APIView
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import MaterialsPagination
 from materials.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.permissions import IsAuthenticated
 
 from materials.services import get_url_payment
 from payment.models import Payment
 from users.permissions import IsModerator, IsOwner
+from .tasks import send_mail_course_update
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -42,6 +43,11 @@ class CourseViewSet(viewsets.ModelViewSet):
         new_course = serializer.save()
         new_course.user = self.request.user
         new_course.save()
+
+    def perform_update(self, request, pk=None, *args, **kwargs):
+        course = Course.objects.get(pk=pk)
+        send_mail_course_update.delay(course.id)
+        return Response('Курс успешно обновлен', status=status.HTTP_200_OK)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
