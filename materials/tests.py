@@ -139,7 +139,9 @@ class SubscriptionTest(APITestCase):
         )
 
     def test_create_subscription(self):
-        """ Тестирование создания подписки на курс """
+        """
+        Тестирование создания подписки на курс
+        """
         data = {
             "course_id": 1,
             "user": 1
